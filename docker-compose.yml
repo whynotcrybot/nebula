@@ -1,0 +1,38 @@
+version: '2'
+services:
+
+  mysql:
+    image: mysql:5.6
+    container_name: nebula-db
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+      MYSQL_ROOT_PASSWORD: pass
+    external_links:
+      - mysql:db
+    restart: always
+    ports:
+      - 8080:80
+
+  api:
+    build:
+      context: ./nebula-api
+      dockerfile: Dockerfile
+    volumes:
+      - ./nebula-api:/app
+      - /app/node_modules
+    depends_on:
+      - mysql
+    ports:
+      - "3000:3000"
+    command: yarn dev
+    environment:
+      - MONGO_URL_DEV=mongodb://mongo/kimochi
+
