@@ -40,10 +40,11 @@ services:
       - "3000:3000"
     command: yarn dev
     environment:
-      - DB_HOST=mysql
-      - DB_USER=root
-      - DB_PASSWORD=pass
-      - DB_DATABASE=adventureworks
+      NEW_REVIEW_TOPIC: new-review-topic
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: pass
+      DB_DATABASE: adventureworks
 
   review-worker:
     build:
@@ -55,4 +56,7 @@ services:
     depends_on:
       - redis
     command: yarn dev
+    environment:
+      NEW_REVIEW_TOPIC: new-review-topic
+      REVIEW_APPROVED_TOPIC: review-approved-topic
 

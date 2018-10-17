@@ -10,7 +10,7 @@ const rsmq = new RedisSMQ({
 module.exports = async (app) => {
   app.set('redis', rsmq)
 
-  rsmq.createQueue({ qname: 'reviews-queue'}, (err, resp) => {
+  rsmq.createQueue({ qname: config.NEW_REVIEW_TOPIC }, (err, resp) => {
     if (resp === 1) console.log('Reviews queue initialized.')
   })
 }

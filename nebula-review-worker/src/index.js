@@ -12,7 +12,7 @@ const rsmq = new RedisSMQ({
 console.log('Worker is waiting for new messages!')
 
 function receiveMessage () {
-  rsmq.receiveMessage({ qname: 'reviews-queue' }, (err, resp) => {
+  rsmq.receiveMessage({ qname: config.NEW_REVIEW_TOPIC}, (err, resp) => {
     if (!resp || !resp.id) return;
 
     const message = JSON.parse(resp.message)
@@ -20,7 +20,7 @@ function receiveMessage () {
     console.log('Message received.', message);
    
     rsmq.deleteMessage({
-        qname: 'reviews-queue',
+        qname: config.NEW_REVIEW_TOPIC,
         id: resp.id,
     }, (err, resp) => {
       if (resp === 1) console.log('Message deleted.');
