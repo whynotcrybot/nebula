@@ -3,6 +3,6 @@ const reviews = require('../controllers/reviews.controller')
 
 const router = new Router()
 
-router.get('/', reviews.addReview)
+router.post('/', reviews.addReview)
 
 module.exports = router

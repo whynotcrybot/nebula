@@ -2,28 +2,20 @@ async function addReview (req, res) {
   const redis = req.app.get('redis')
   const knex = req.app.get('knex')
 
-  const sampleReview = {
-    name: 'Elvis Presley',
-		email: 'theking@elvismansion.com',
-		productid: '87823',
-    text: 'Best product',
-    rating: '5'
-  }
-
   try {
     const result = await knex('productreview').insert({
-      ProductID: sampleReview.productid,
-      ReviewerName: sampleReview.name,
-      EmailAddress: sampleReview.email,
-      Rating: sampleReview.rating,
-      Comments: sampleReview.text
+      ProductID: req.body.productid,
+      ReviewerName: req.body.name,
+      EmailAddress: req.body.email,
+      Rating: req.body.rating,
+      Comments: req.body.text
     })
 
     const reviewId = result[0]
 
     redis.sendMessage({
       qname: 'reviews-queue',
-      message: JSON.stringify(sampleReview),
+      message: JSON.stringify(req.body),
     }, (err, resp) => {
       if (err) throw err; 
       if (resp) {
