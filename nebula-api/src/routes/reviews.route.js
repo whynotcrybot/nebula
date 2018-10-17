@@ -1,9 +1,8 @@
 const { Router } = require('express')
+const reviews = require('../controllers/reviews.controller')
 
 const router = new Router()
 
-router.get('/', (req, res) => {
-  res.sendStatus(200)
-})
+router.get('/', reviews.addReview)
 
 module.exports = router

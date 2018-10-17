@@ -1,12 +1,18 @@
 const express = require('express')
 
 //const  './config/database'
-const middlewares = require('./config/middlewares')
+const applyMiddlewares = require('./config/middlewares')
+const enableDatabase = require('./config/database')
+const enableRedis = require('./config/redis')
+
 const config = require('./config/config')
 const routes = require('./routes')
 
 const app = express()
-middlewares(app)
+
+applyMiddlewares(app)
+enableDatabase(app)
+enableRedis(app)
 
 app.use('/api', routes)
 
