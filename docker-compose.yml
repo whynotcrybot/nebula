@@ -6,6 +6,7 @@ services:
     container_name: nebula-db
     environment:
       MYSQL_ROOT_PASSWORD: pass
+      REDIS: redis
     volumes:
       - .:/docker-entrypoint-initdb.d
 
@@ -21,6 +22,10 @@ services:
     ports:
       - 8080:80
 
+  redis:
+    image: redis:4.0.5-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+
   api:
     build:
       context: ./nebula-api
@@ -30,9 +35,24 @@ services:
       - /app/node_modules
     depends_on:
       - mysql
+      - redis
     ports:
       - "3000:3000"
     command: yarn dev
     environment:
-      - MONGO_URL_DEV=mongodb://mongo/kimochi
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=pass
+      - DB_DATABASE=adventureworks
+
+  review-worker:
+    build:
+      context: ./nebula-review-worker
+      dockerfile: Dockerfile
+    volumes:
+      - ./nebula-review-worker:/app
+      - /app/node_modules
+    depends_on:
+      - redis
+    command: yarn dev
 
