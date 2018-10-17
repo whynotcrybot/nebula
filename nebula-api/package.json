@@ -1,5 +1,5 @@
 {
-  "name": "kimochi-server",
+  "name": "nebula-api-server",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
@@ -12,7 +12,8 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "cors": "^2.8.3",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "rsmq": "^0.9.2"
   },
   "devDependencies": {
     "nodemon": "^1.12.5"

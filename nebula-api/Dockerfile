@@ -1,4 +1,5 @@
 FROM node:alpine
+RUN apk add --update python build-base
 
 RUN mkdir -p /app
 WORKDIR /app
