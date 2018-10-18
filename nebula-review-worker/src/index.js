@@ -14,11 +14,13 @@ newReviewQ.on("message", async (msg, next, id) => {
       await knex('productreview')
         .where('ProductReviewID', '=', review.reviewId)
         .update({ approved: '1' })
+
+      reviewApprovedQ.send(msg)
+
+      console.log('Review has been approved.')
     } catch (e) {
       console.log('Error:', e)
     }
-
-    console.log('Review has been approved.')
   } else {
     console.log('Review contains forbidden words.')
   }
