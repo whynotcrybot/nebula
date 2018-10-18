@@ -63,3 +63,16 @@ services:
       DB_USER: root
       DB_PASSWORD: pass
       DB_DATABASE: adventureworks
+
+  notification-worker:
+    build:
+      context: ./nebula-notification-worker
+      dockerfile: Dockerfile
+    volumes:
+      - ./nebula-notification-worker:/app
+      - /app/node_modules
+    depends_on:
+      - redis
+    command: yarn dev
+    environment:
+      REVIEW_APPROVED_TOPIC: review-approved-topic
