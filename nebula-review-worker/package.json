@@ -10,6 +10,8 @@
   "author": "Cry",
   "license": "ISC",
   "dependencies": {
+    "knex": "^0.15.2",
+    "mysql": "^2.16.0",
     "rsmq-worker": "^0.5.2"
   },
   "devDependencies": {
