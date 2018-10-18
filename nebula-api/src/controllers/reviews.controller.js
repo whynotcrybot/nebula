@@ -17,7 +17,10 @@ async function addReview (req, res) {
 
     redis.sendMessage({
       qname: config.NEW_REVIEW_TOPIC,
-      message: JSON.stringify(req.body),
+      message: JSON.stringify({
+        ...req.body,
+        reviewId
+      }),
     }, (err, resp) => {
       if (err) throw err; 
       if (resp) {
