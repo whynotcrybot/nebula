@@ -1,23 +1,11 @@
-const RSMQWorker = require( "rsmq-worker" )
+const { newReviewQ, reviewApprovedQ } = require('./config/redis')
 
-//const  './config/database'
-const config = require('./config/config')
-
-const worker = new RSMQWorker(
-  config.NEW_REVIEW_TOPIC,
-  {
-    host: config.REDIS,
-    redisPrefix: 'rsmq'
-  }
-);
-
-console.log('Worker is waiting for new messages!')
-
-worker.on( "message", ( msg, next, id ) => {
-  const message = JSON.parse(msg)
-  console.log('Message received.', message);
+newReviewQ.on("message", (msg, next, id) => {
+  const review = JSON.parse(msg)
+  console.log('Message received.', review)
 
 	next()
 })
 
-worker.start()
+newReviewQ.start()
+console.log('Worker is waiting for new messages!')
