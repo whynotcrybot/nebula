@@ -59,4 +59,7 @@ services:
     environment:
       NEW_REVIEW_TOPIC: new-review-topic
       REVIEW_APPROVED_TOPIC: review-approved-topic
-
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: pass
+      DB_DATABASE: adventureworks
