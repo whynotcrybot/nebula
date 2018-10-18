@@ -1,31 +1,23 @@
-const RedisSMQ = require("rsmq")
+const RSMQWorker = require( "rsmq-worker" )
 
 //const  './config/database'
 const config = require('./config/config')
 
-const rsmq = new RedisSMQ({
-  host: config.REDIS,
-  port: 6379,
-  ns: 'rsmq'
-});
+const worker = new RSMQWorker(
+  config.NEW_REVIEW_TOPIC,
+  {
+    host: config.REDIS,
+    redisPrefix: 'rsmq'
+  }
+);
 
 console.log('Worker is waiting for new messages!')
 
-function receiveMessage () {
-  rsmq.receiveMessage({ qname: config.NEW_REVIEW_TOPIC}, (err, resp) => {
-    if (!resp || !resp.id) return;
+worker.on( "message", ( msg, next, id ) => {
+  const message = JSON.parse(msg)
+  console.log('Message received.', message);
 
-    const message = JSON.parse(resp.message)
+	next()
+})
 
-    console.log('Message received.', message);
-   
-    rsmq.deleteMessage({
-        qname: config.NEW_REVIEW_TOPIC,
-        id: resp.id,
-    }, (err, resp) => {
-      if (resp === 1) console.log('Message deleted.');
-    });
-  });
-}
-
-setInterval(receiveMessage, 1000);
+worker.start()
