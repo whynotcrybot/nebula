@@ -34,7 +34,24 @@ async function addReview (req, res) {
     });
 
   } catch (e) {
-    console.log('Error:', e)    
+    console.log('Error:', e)
+
+    res.json({
+      success: false,
+      message: 'error occured'
+    })
+  }
+}
+
+async function getReviews (req, res) {
+  const knex = req.app.get('knex')
+
+  try {
+    const reviews = await knex('productreview').where('ProductReviewID', '>', '4');
+
+    res.send(JSON.stringify(reviews, null, 3))
+  } catch (e) {
+    console.log('Error:', e)
 
     res.json({
       success: false,
@@ -44,5 +61,6 @@ async function addReview (req, res) {
 }
 
 module.exports = {
-  addReview
+  addReview,
+  getReviews
 }
